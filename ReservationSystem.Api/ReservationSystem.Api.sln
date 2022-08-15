@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationSystem.Api", "Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationSystem.Domain", "..\ReservationSystem.Domain\ReservationSystem.Domain.csproj", "{61C395B0-7152-43FB-87C5-1C432B88C71A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationSystem.Application", "..\ReservationSystem.Application\ReservationSystem.Application.csproj", "{39462CD4-2FB6-4D82-B7E3-573C17EB10E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationSystem.Application", "..\ReservationSystem.Application\ReservationSystem.Application.csproj", "{39462CD4-2FB6-4D82-B7E3-573C17EB10E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationSystem.Infrastructure", "..\ReservationSystem.Infrastructure\ReservationSystem.Infrastructure.csproj", "{CBD9007F-DB1C-4405-AFD4-A023031A9A98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4E5A698-A3AB-442D-B304-BC711D850FB1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

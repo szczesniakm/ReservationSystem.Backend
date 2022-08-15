@@ -10,6 +10,7 @@ namespace ReservationSystem.Application.IoC
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            services.AddTransient<OSsService>();
             services.AddTransient<HostsService>();
             services.AddTransient<ReservationsService>();
             services.AddTransient<SchedulerService>();

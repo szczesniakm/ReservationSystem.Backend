@@ -44,7 +44,7 @@ namespace ReservationSystem.Application.Services
             if (isReserved)
                 throw new Exception($"Host {request.HostName} jest w tym czasie zarezerwowany.");
 
-            var reservation = new Reservation(host, "admin", os, request.From < DateTime.Now ? DateTime.Now : request.From, request.To);
+            var reservation = new Reservation(host, "admin", os, request.From < DateTime.UtcNow ? DateTime.UtcNow : request.From, request.To);
 
             await _reservationRepository.CreateAsync(reservation);
 

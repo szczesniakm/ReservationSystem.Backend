@@ -36,6 +36,6 @@ namespace ReservationSystem.Infrastructure.Repositories
         }
 
         public async Task<bool> IsReservedBetween(DateTime start, DateTime end, string hostName) 
-            => await _context.Reservations.GetReservedBetween(start, end).Where(x => x.Host.Name == hostName).AnyAsync();
+            => await _context.Reservations.Include(x => x.Host).GetBetween(start, end).ActiveOrUpcoming().Where(x => x.Host.Name == hostName).AnyAsync();
     }
 }

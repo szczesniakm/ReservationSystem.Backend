@@ -17,11 +17,16 @@ namespace ReservationSystem.Infrastructure.Repositories
     
         public async Task<IEnumerable<AvaliableHost>> GetAvaliableBetween(DateTime startDate, DateTime endDate)
         {
-            var reservedHosts = _context.Reservations.GetReservedBetween(startDate, endDate).Include(x => x.Host).Select(x => x.Host);
+            var reservedHosts = _context.Reservations
+                .Include(x => x.Host)
+                .GetBetween(startDate, endDate)
+                .ActiveOrUpcoming()
+                .Select(x => x.Host.Name);
+
             var avaliableHosts = await _context.Hosts
-                .Include(x => x.Reservations.Where(r => r.StartDate > endDate).OrderBy(r => r.StartDate))
-                .Where(h => !reservedHosts.Contains(h))
-                .Select(s => new AvaliableHost(s.Name, s.Reservations.FirstOrDefault().StartDate))
+                .Include(x => x.Reservations.Where(r => r.StartDate > endDate))
+                .Where(h => !reservedHosts.Contains(h.Name))
+                .Select(s => new AvaliableHost(s.Name, s.Reservations.OrderBy(r => r.StartDate).FirstOrDefault().StartDate))
                 .ToListAsync();
 
             return avaliableHosts;

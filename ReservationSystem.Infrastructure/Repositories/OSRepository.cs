@@ -1,4 +1,5 @@
-﻿using ReservationSystem.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using ReservationSystem.Domain.Entities;
 using ReservationSystem.Domain.Repositories;
 
 namespace ReservationSystem.Infrastructure.Repositories
@@ -14,5 +15,8 @@ namespace ReservationSystem.Infrastructure.Repositories
 
         public async Task<OS?> Get(string osName)
             => await _context.OSs.FindAsync(osName);
+
+        public async Task<IEnumerable<string>> GetDictionary()
+            => await _context.OSs.Select(x => x.Name).ToListAsync();
     }
 }

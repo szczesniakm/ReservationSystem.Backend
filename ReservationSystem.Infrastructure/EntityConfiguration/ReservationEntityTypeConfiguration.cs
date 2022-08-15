@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReservationSystem.Domain.Entities;
 
 namespace ReservationSystem.Infrastructure.EntityConfiguration
@@ -20,10 +21,12 @@ namespace ReservationSystem.Infrastructure.EntityConfiguration
 
             builder
                 .Property(x => x.StartDate)
+                .HasConversion<DateTimeToTicksConverter>()
                 .IsRequired();
 
             builder
                 .Property(x => x.EndDate)
+                .HasConversion<DateTimeToTicksConverter>()
                 .IsRequired();
 
             builder

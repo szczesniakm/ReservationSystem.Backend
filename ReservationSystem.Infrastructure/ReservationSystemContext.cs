@@ -21,8 +21,10 @@ namespace ReservationSystem.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_databaseSettings.DatabaseFile);
-            optionsBuilder.LogTo(Console.WriteLine);
+            optionsBuilder
+                .UseSqlite(_databaseSettings.DatabaseFile)
+                .EnableSensitiveDataLogging()
+                .LogTo(Console.WriteLine);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
