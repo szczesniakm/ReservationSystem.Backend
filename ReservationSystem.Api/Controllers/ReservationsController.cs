@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ReservationSystem.Application.Models.Reservations;
+using ReservationSystem.Application.Models;
 using ReservationSystem.Application.Services;
 
 namespace ReservationSystem.Api.Controllers
@@ -15,6 +16,7 @@ namespace ReservationSystem.Api.Controllers
             _reservationsService = reservationService;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> MakeReservation([FromBody]MakeReservationRequest request)
         {

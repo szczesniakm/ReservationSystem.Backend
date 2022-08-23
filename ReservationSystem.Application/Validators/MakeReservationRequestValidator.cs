@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using ReservationSystem.Application.Models.Reservations;
+using ReservationSystem.Application.Models;
 
 namespace ReservationSystem.Application.Validators
 {

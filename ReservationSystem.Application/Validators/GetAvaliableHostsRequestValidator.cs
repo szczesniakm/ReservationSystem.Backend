@@ -1,5 +1,5 @@
-﻿using ReservationSystem.Application.Models.Hosts;
-using FluentValidation;
+﻿using FluentValidation;
+using ReservationSystem.Application.Models;
 
 namespace ReservationSystem.Application.Validators
 {

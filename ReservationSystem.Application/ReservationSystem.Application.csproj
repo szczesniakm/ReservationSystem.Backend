@@ -9,8 +9,10 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.2.0" />
 	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
 	<PackageReference Include="Quartz" Version="3.4.0" />
 	<PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.4.0" />
+	<PackageReference Include="System.DirectoryServices.Protocols" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

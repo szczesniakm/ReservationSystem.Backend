@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
-using ReservationSystem.Application.Models.Hosts;
+using ReservationSystem.Application.Models;
 using ReservationSystem.Application.Services;
 
 namespace ReservationSystem.Application.IoC
@@ -13,6 +13,7 @@ namespace ReservationSystem.Application.IoC
             services.AddTransient<OSsService>();
             services.AddTransient<HostsService>();
             services.AddTransient<ReservationsService>();
+            services.AddTransient<AuthenticationService>();
             services.AddTransient<SchedulerService>();
 
             services.Configure<QuartzOptions>(options =>

@@ -1,4 +1,4 @@
-﻿namespace ReservationSystem.Application.Models.Hosts
+﻿namespace ReservationSystem.Application.Models
 {
     public record GetAvaliableHostsRequest(DateTime From, DateTime To);
 }

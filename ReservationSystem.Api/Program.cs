@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using ReservationSystem.Application.IoC;
 using ReservationSystem.Infrastructure.IoC;
+using ReservationSystem.Infrastructure.Settings;
+using System.Text;
 
 namespace ReservationSystem.Api
 {
@@ -22,6 +26,23 @@ namespace ReservationSystem.Api
                     policy.AllowAnyOrigin();
                 });
             });
+            builder.Services
+                .AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidateAudience = false,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret))
+                    };
+                });
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -37,6 +58,8 @@ namespace ReservationSystem.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseCors();
 

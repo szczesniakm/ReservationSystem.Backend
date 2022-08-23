@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ReservationSystem.Application.Models.Hosts;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ReservationSystem.Application.Models;
 using ReservationSystem.Application.Services;
 using ReservationSystem.Domain.Models;
 
 namespace ReservationSystem.Api.Controllers
 {
+    [Authorize(Roles = @"cn=admin,ou=groups,dc=example,dc=com")]
     [Route("api/[controller]")]
     [ApiController]
     public class HostsController : ControllerBase

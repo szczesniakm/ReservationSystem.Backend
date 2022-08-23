@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using ReservationSystem.Application.Models.Reservations;
+using ReservationSystem.Application.Models;
 using ReservationSystem.Domain.Entities;
 using ReservationSystem.Domain.Repositories;
 using ReservationSystem.Infrastructure.Repositories;
