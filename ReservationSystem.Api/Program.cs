@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Quartz;
+using ReservationSystem.Api.Middlewares;
 using ReservationSystem.Application.IoC;
 using ReservationSystem.Infrastructure.IoC;
 using ReservationSystem.Infrastructure.Settings;
@@ -48,6 +50,8 @@ namespace ReservationSystem.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<ExceptionHandlingMiddleware>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -56,6 +60,8 @@ namespace ReservationSystem.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 
@@ -66,6 +72,10 @@ namespace ReservationSystem.Api
             app.UseAuthorization();
 
             app.MapControllers();
+
+            var schedulerFactory = app.Services.GetService<ISchedulerFactory>();
+            var scheduler = schedulerFactory.GetScheduler().Result;
+            scheduler.Start().Wait();
 
             app.Run();
         }

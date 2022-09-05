@@ -6,7 +6,7 @@ using ReservationSystem.Domain.Models;
 
 namespace ReservationSystem.Api.Controllers
 {
-    [Authorize(Roles = @"cn=admin,ou=groups,dc=example,dc=com")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class HostsController : ControllerBase

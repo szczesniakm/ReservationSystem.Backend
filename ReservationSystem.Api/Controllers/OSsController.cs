@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReservationSystem.Application.Services;
+using ReservationSystem.Infrastructure;
 
 namespace ReservationSystem.Api.Controllers
 {
@@ -15,6 +16,10 @@ namespace ReservationSystem.Api.Controllers
 
         [HttpGet("dictionary")]
         public async Task<IEnumerable<string>> GetAvaliableHosts()
-            => await _ossService.GetDictionary();
+        {
+            var result = await CommandExecutionHelper.ExecuteAsync("pwsh", "-Command ls");
+            Console.WriteLine(result);
+            return await _ossService.GetDictionary();
+        }
     }
 }

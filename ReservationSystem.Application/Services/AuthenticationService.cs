@@ -25,13 +25,15 @@ namespace ReservationSystem.Application.Services
             _jwtTokenService = jwtTokenService;
         }
 
-        public async Task<string> LoginAsync(LoginRequest model)
+        public async Task<LoginResponse> LoginAsync(LoginRequest model)
         {
             await _loginRequestValidator.ValidateAndThrowAsync(model);
 
             var groups = await _ldapAuthenticationProvider.AuthenticateAsync(model.Username, model.Password);
 
-            return _jwtTokenService.CreateToken(model.Username, groups);
+            var token = _jwtTokenService.CreateToken(model.Username, groups);
+
+            return new LoginResponse(token);
         }
     }
 }
