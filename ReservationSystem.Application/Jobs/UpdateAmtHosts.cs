@@ -17,7 +17,7 @@ namespace ReservationSystem.Application.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var result = await CommandExecutionHelper.ExecuteAsync("./meshcmd", "amtscan --scan 10.146.255.0/24");
+            var result = await CommandExecutionHelper.ExecuteAsync("./meshcmd", "amtscan --scan 10.146.225.0/24");
             Regex IPAd = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
             MatchCollection MatchResult = IPAd.Matches(result);
             var hosts = MatchResult.ToList().Select(x => new Host(x.ToString())).ToList();
