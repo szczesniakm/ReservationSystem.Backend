@@ -21,8 +21,11 @@ namespace ReservationSystem.Application.Jobs
             Regex IPAd = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
             MatchCollection MatchResult = IPAd.Matches(result);
             var hosts = MatchResult.ToList().Select(x => new Host(x.ToString())).ToList();
-            foreach (var host in hosts)
-                Console.WriteLine(host);
+            hosts.ForEach(async x =>
+            {
+                var status = await CommandExecutionHelper.ExecuteAsync("./meshcmd", $"sudo ./meshcmd AmtPower --host {x.Name} --pass");
+                Console.WriteLine(status);
+            });
         }
     }
 }
