@@ -23,7 +23,8 @@ namespace ReservationSystem.Api.Controllers
         [HttpPut("{hostName}")]
         public async Task<IActionResult> PowerOnHost(string hostName)
         {
-            await _hostsService.PowerOn(hostName);
+            var request = new PowerOnRequest(hostName);
+            await _hostsService.PowerOn(request);
             return NoContent();
         }
     }
