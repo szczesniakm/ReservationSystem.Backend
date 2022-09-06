@@ -1,11 +1,11 @@
 ﻿using ReservationSystem.Domain.Entities;
-using ReservationSystem.Domain.Models;
 
 namespace ReservationSystem.Domain.Repositories
 {
     public interface IHostRepository
     {
-        Task<IEnumerable<AvaliableHost>> GetAvaliableBetween(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<Host>> GetAll();
         Task<Host?> Get(string hostName);
+        Task UpdateHosts(IEnumerable<Host> hosts);
     }
 }

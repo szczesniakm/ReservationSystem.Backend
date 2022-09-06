@@ -8,24 +8,57 @@ namespace ReservationSystem.Application.Jobs
 {
     internal class UpdateAmtHosts : IJob
     {
-        private readonly IReservationRepository _reservationRepository;
+        private readonly IHostRepository _hostRepository;
 
-        public UpdateAmtHosts(IReservationRepository reservationRepository)
+        public UpdateAmtHosts(IHostRepository hostRepository)
         {
-            _reservationRepository = reservationRepository;
+            _hostRepository = hostRepository;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var result = await CommandExecutionHelper.ExecuteAsync("./meshcmd", "amtscan --scan 10.146.225.0/24");
+            var hostsUrls = await GetAvaliableAmtHostUrls();
+            var hosts = await GetUpdatedHosts(hostsUrls);
+
+            await _hostRepository.UpdateHosts(hosts);
+        }
+
+        private async Task<List<string>> GetAvaliableAmtHostUrls()
+        {
+            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("./meshcmd", "amtscan --scan 10.146.225.0/24");
             Regex IPAd = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
-            MatchCollection MatchResult = IPAd.Matches(result);
-            var hosts = MatchResult.ToList().Select(x => new Host(x.ToString())).ToList();
-            hosts.ForEach(async x =>
+            return IPAd.Matches(output).Skip(1).Select(x => x.ToString()).ToList();
+        }
+
+        private async Task<List<Host>> GetUpdatedHosts(List<string> avaliableAmtHostUrls)
+        {
+            List<Host> hosts = new List<Host>();
+            avaliableAmtHostUrls.ForEach(async x =>
             {
-                var status = await CommandExecutionHelper.ExecuteAsync("./meshcmd", $"sudo ./meshcmd AmtPower --host {x.Name} --pass");
-                Console.WriteLine(status);
+                var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("./meshcmd", $"sudo ./meshcmd AmtPower --host {x} --pass");
+                if (exitCode == 0)
+                {
+                    var status = GetStatusFromOutput(output);
+                    hosts.Add(new Host(x, status));
+                }
             });
+
+            return hosts;
+        }
+
+        private static string GetStatusFromOutput(string output)
+        {
+            var status = output.Split(": ")[1];
+
+            switch (status)
+            {
+                case HostStatus.PowerOn:
+                    return HostStatus.PowerOn;
+                case HostStatus.PowerOff:
+                    return HostStatus.PowerOff;
+                default:
+                    return HostStatus.Unknown;
+            }
         }
     }
 }

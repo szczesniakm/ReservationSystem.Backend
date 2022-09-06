@@ -5,7 +5,7 @@ namespace ReservationSystem.Infrastructure
 {
     public class CommandExecutionHelper
     {
-        public static async Task<string> ExecuteAsync(string program, string args)
+        public static async Task<(string, int)> ExecuteAsync(string program, string args)
         {
             StringBuilder output = new StringBuilder();
             var isProcessing = false;
@@ -44,7 +44,7 @@ namespace ReservationSystem.Infrastructure
 
             var res = output.ToString();
 
-            return output.ToString();
+            return (output.ToString(), process.ExitCode);
         }
     }
 }

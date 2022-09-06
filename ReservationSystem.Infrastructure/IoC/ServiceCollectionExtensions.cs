@@ -17,7 +17,6 @@ namespace ReservationSystem.Infrastructure.IoC
             services.AddDbContext<ReservationSystemContext>();
             services.AddTransient<IHostRepository, HostRepository>();
             services.AddTransient<IOSRepository, OSRepository>();
-            services.AddTransient<IReservationRepository, ReservationRepository>();
             services.AddTransient<JwtTokenService>();
             services.AddTransient<LdapAuthenticationProvider>();
 

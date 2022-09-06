@@ -27,7 +27,7 @@ namespace ReservationSystem.Application.IoC
                 q.UseMicrosoftDependencyInjectionJobFactory();
 
                 q.ScheduleJob<UpdateAmtHosts>(trigger => trigger.StartNow()
-                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever()));
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(30).RepeatForever()));
             });
 
             services.AddValidatorsFromAssemblyContaining<GetAvaliableHostsRequest>();

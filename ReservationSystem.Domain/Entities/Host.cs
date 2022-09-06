@@ -3,13 +3,19 @@
     public class Host
     {
         public string Name { get; private set; }
-        public ICollection<Reservation>? Reservations { get; private set; }
+        public string Status { get; private set; }
 
         private Host() { }
 
-        public Host(string name)
+        public Host(string name, string status)
         {
             Name = name;
+            Status = status;
+        }
+
+        public void SetStatus(string newStatus)
+        {
+            Status = newStatus;
         }
     }
 }
