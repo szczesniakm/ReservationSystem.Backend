@@ -25,7 +25,7 @@ namespace ReservationSystem.Application.Jobs
 
         private async Task<List<string>> GetAvaliableAmtHostUrls()
         {
-            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("./meshcmd", "amtscan --scan 10.146.225.0/24");
+            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", "amtscan --scan 10.146.225.0/24");
             Regex IPAd = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
             return IPAd.Matches(output).Skip(1).Select(x => x.ToString()).ToList();
         }
@@ -35,7 +35,7 @@ namespace ReservationSystem.Application.Jobs
             List<Host> hosts = new List<Host>();
             avaliableAmtHostUrls.ForEach(async x =>
             {
-                var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("./meshcmd", $"sudo ./meshcmd AmtPower --host {x} --pass");
+                var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --host {x} --pass");
                 if (exitCode == 0)
                 {
                     var status = GetStatusFromOutput(output);

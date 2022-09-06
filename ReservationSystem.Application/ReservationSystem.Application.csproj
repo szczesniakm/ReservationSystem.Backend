@@ -21,13 +21,4 @@
     <ProjectReference Include="..\ReservationSystem.Infrastructure\ReservationSystem.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Processes\SetOSProcess.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Processes\PowerOffProcess.cs">
-      <SubType>Component</SubType>
-    </Compile>
-  </ItemGroup>
-
 </Project>

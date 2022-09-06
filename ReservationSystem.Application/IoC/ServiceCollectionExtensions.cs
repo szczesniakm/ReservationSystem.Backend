@@ -13,7 +13,6 @@ namespace ReservationSystem.Application.IoC
         {
             services.AddTransient<OSsService>();
             services.AddTransient<HostsService>();
-            services.AddTransient<ReservationsService>();
             services.AddTransient<AuthenticationService>();
             services.AddTransient<UpdateAmtHosts>();
 
@@ -30,7 +29,7 @@ namespace ReservationSystem.Application.IoC
                         .WithSimpleSchedule(x => x.WithIntervalInSeconds(30).RepeatForever()));
             });
 
-            services.AddValidatorsFromAssemblyContaining<GetAvaliableHostsRequest>();
+            services.AddValidatorsFromAssemblyContaining<LoginRequest>();
             return services;
         }
     }

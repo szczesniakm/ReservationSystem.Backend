@@ -29,7 +29,7 @@ namespace ReservationSystem.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ReservationEntityTypeConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(HostEntityTypeConfiguration).Assembly);
         }
     }
 }

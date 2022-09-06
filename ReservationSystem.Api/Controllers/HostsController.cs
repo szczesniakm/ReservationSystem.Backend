@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ReservationSystem.Application.Models;
 using ReservationSystem.Application.Services;
-using ReservationSystem.Domain.Models;
 
 namespace ReservationSystem.Api.Controllers
 {
@@ -17,8 +16,8 @@ namespace ReservationSystem.Api.Controllers
             _hostsService = hostsService;
         }
 
-        [HttpGet("avaliable-hosts")]
-        public async Task<IEnumerable<AvaliableHost>> GetAvaliableHosts([FromQuery]GetAvaliableHostsRequest request)
-            => await _hostsService.GetAvaliableHosts(request);
+        [HttpGet("hosts")]
+        public async Task<GetAllHostsResponse> GetAvaliableHosts()
+            => await _hostsService.GetHosts();
     }
 }

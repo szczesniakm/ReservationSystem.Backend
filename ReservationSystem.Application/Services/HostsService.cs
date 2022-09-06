@@ -1,4 +1,4 @@
-﻿using ReservationSystem.Domain.Entities;
+﻿using ReservationSystem.Application.Models;
 using ReservationSystem.Domain.Repositories;
 
 namespace ReservationSystem.Application.Services
@@ -14,7 +14,10 @@ namespace ReservationSystem.Application.Services
 
         public async Task<GetAllHostsResponse> GetHosts()
         {
-            return await _hostRepository.GetAll();
+            var hosts = await _hostRepository.GetAll();
+
+            return new GetAllHostsResponse(
+                hosts.Select(x => new GetAllHostsResponse.Host(x.Name, x.Status)).ToList());
         }
            
     }
