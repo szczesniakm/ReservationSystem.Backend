@@ -52,7 +52,7 @@ namespace ReservationSystem.Application.Jobs
 
         private static string GetStatusFromOutput(string output)
         {
-            var status = output.Split(": ")[1];
+            var status = output.Trim().Split(": ")[1];
 
             switch (status)
             {
