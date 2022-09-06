@@ -16,8 +16,15 @@ namespace ReservationSystem.Api.Controllers
             _hostsService = hostsService;
         }
 
-        [HttpGet("hosts")]
+        [HttpGet]
         public async Task<GetAllHostsResponse> GetAvaliableHosts()
             => await _hostsService.GetHosts();
+
+        [HttpPut("{hostName}")]
+        public async Task<IActionResult> PowerOnHost(string hostName)
+        {
+            await _hostsService.PowerOn(hostName);
+            return NoContent();
+        }
     }
 }

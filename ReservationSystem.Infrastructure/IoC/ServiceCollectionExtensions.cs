@@ -14,6 +14,7 @@ namespace ReservationSystem.Infrastructure.IoC
             services.Configure<DatabaseSettings>(configuration.GetSection("DatabaseSettings"));
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<LdapSettings>(configuration.GetSection("LdapSettings"));
+            services.Configure<AmtSettings>(configuration.GetSection("AmtSettings"));
             services.AddDbContext<ReservationSystemContext>();
             services.AddTransient<IHostRepository, HostRepository>();
             services.AddTransient<IOSRepository, OSRepository>();

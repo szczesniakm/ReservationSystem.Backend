@@ -1,7 +1,9 @@
-﻿using Quartz;
+﻿using Microsoft.Extensions.Options;
+using Quartz;
 using ReservationSystem.Domain.Entities;
 using ReservationSystem.Domain.Repositories;
 using ReservationSystem.Infrastructure;
+using ReservationSystem.Infrastructure.Settings;
 using System.Text.RegularExpressions;
 
 namespace ReservationSystem.Application.Jobs
@@ -9,10 +11,12 @@ namespace ReservationSystem.Application.Jobs
     internal class UpdateAmtHosts : IJob
     {
         private readonly IHostRepository _hostRepository;
+        private readonly AmtSettings _amtSettigns;
 
-        public UpdateAmtHosts(IHostRepository hostRepository)
+        public UpdateAmtHosts(IHostRepository hostRepository, IOptions<AmtSettings> amtSettings)
         {
             _hostRepository = hostRepository;
+            _amtSettigns = amtSettings.Value;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -35,7 +39,7 @@ namespace ReservationSystem.Application.Jobs
             List<Host> hosts = new List<Host>();
             avaliableAmtHostUrls.ForEach(async x =>
             {
-                var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --host {x} --pass");
+                var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --host {x} --pass {_amtSettigns.Password}");
                 if (exitCode == 0)
                 {
                     var status = GetStatusFromOutput(output);

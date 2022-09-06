@@ -2,8 +2,8 @@
 {
     public static class HostStatus
     {
-        public const string PowerOn = "Power On";
-        public const string PowerOff = "Soft Off";
+        public const string PowerOn = "Power on";
+        public const string PowerOff = "Soft off";
         public const string Unknown = "Unknown";
     }
 }
