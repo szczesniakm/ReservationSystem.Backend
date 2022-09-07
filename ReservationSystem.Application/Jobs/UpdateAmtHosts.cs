@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Options;
 using Quartz;
 using ReservationSystem.Domain.Entities;
 using ReservationSystem.Domain.Repositories;
 using ReservationSystem.Infrastructure;
 using ReservationSystem.Infrastructure.Settings;
 using System.Text.RegularExpressions;
+using ReservationSystem.Infrastructure.Hubs;
 
 namespace ReservationSystem.Application.Jobs
 {
@@ -12,11 +14,13 @@ namespace ReservationSystem.Application.Jobs
     {
         private readonly IHostRepository _hostRepository;
         private readonly AmtSettings _amtSettigns;
+        private readonly IHubContext<HostsHub> _hostsHubContext;
 
-        public UpdateAmtHosts(IHostRepository hostRepository, IOptions<AmtSettings> amtSettings)
+        public UpdateAmtHosts(IHostRepository hostRepository, IOptions<AmtSettings> amtSettings, IHubContext<HostsHub> hostsHubContext)
         {
             _hostRepository = hostRepository;
             _amtSettigns = amtSettings.Value;
+            _hostsHubContext = hostsHubContext;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -25,6 +29,7 @@ namespace ReservationSystem.Application.Jobs
             var hosts = await GetUpdatedHosts(hostsUrls);
 
             await _hostRepository.UpdateHosts(hosts);
+            await _hostsHubContext.Clients.All.SendAsync("update_hosts", hosts);
         }
 
         private async Task<List<string>> GetAvaliableAmtHostUrls()

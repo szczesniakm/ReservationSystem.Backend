@@ -10,6 +10,7 @@
     <PackageReference Include="FluentValidation" Version="11.2.0" />
 	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+	<PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
 	<PackageReference Include="Quartz" Version="3.4.0" />
 	<PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.4.0" />
 	<PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />

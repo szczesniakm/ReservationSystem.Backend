@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Quartz;
 using ReservationSystem.Api.Middlewares;
 using ReservationSystem.Application.IoC;
+using ReservationSystem.Infrastructure.Hubs;
 using ReservationSystem.Infrastructure.IoC;
 using ReservationSystem.Infrastructure.Settings;
 using System.Text;
@@ -23,9 +24,10 @@ namespace ReservationSystem.Api
             {
                 opt.AddDefaultPolicy(policy =>
                 {
+                    policy.WithOrigins("http://localhost:4200");
                     policy.AllowAnyHeader();
                     policy.AllowAnyMethod();
-                    policy.AllowAnyOrigin();
+                    policy.AllowCredentials();
                 });
             });
             builder.Services
@@ -46,7 +48,7 @@ namespace ReservationSystem.Api
                     };
                 });
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddSignalR();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -72,6 +74,7 @@ namespace ReservationSystem.Api
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapHub<HostsHub>("/hostsHub");
 
             var schedulerFactory = app.Services.GetService<ISchedulerFactory>();
             var scheduler = schedulerFactory.GetScheduler().Result;
