@@ -58,7 +58,7 @@ namespace ReservationSystem.Application.Services
 
         private async Task PowerOff(string hostUrl)
         {
-            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --poweron --host {hostUrl} --pass {_amtSettigns.Password}");
+            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --poweroff --host {hostUrl} --pass {_amtSettigns.Password}");
         }
 
         public async Task UpdateHostsStatus()
