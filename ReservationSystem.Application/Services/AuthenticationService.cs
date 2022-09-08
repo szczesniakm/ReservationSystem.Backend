@@ -17,11 +17,11 @@ namespace ReservationSystem.Application.Services
 
         public AuthenticationService(
             IValidator<LoginRequest> loginRequestValidator,
-            LdapAuthenticationProvider ldapAuthenticationProvider,
+            //LdapAuthenticationProvider ldapAuthenticationProvider,
             JwtTokenService jwtTokenService)
         {
             _loginRequestValidator = loginRequestValidator;
-            _ldapAuthenticationProvider = ldapAuthenticationProvider;
+            //_ldapAuthenticationProvider = ldapAuthenticationProvider;
             _jwtTokenService = jwtTokenService;
         }
 
