@@ -6,7 +6,6 @@
         public Host Host { get; private set; }
         public string Username { get; private set; }
         public OS OS { get; private set; }
-        public ReservationStatus Status { get; private set; }
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
         
@@ -17,14 +16,8 @@
             Host = host;
             Username = username;
             OS = operatingSystem;
-            Status = ReservationStatus.Upcoming;
             StartDate = startDate;
             EndDate = endDate;
-        }
-
-        public void SetStatus(ReservationStatus status)
-        {
-            Status = status;
         }
     }
 }

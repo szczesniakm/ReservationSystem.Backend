@@ -6,6 +6,7 @@ using ReservationSystem.Application.Services;
 namespace ReservationSystem.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class HostsController : ControllerBase
     {
@@ -20,9 +21,16 @@ namespace ReservationSystem.Api.Controllers
             => await _hostsService.GetHosts();
 
         [HttpPut("{hostName}")]
-        public async Task<IActionResult> PowerOnHost(string hostName)
+        public async Task<IActionResult> PowerOnHost(string hostName, [FromBody]PowerOnRequest body)
         {
-            var request = new PowerOnRequest(hostName);
+            var username = User.Identity?.Name;
+
+            var request = body with
+            {
+                HostName = hostName,
+                Username = username!
+            };
+
             await _hostsService.PowerOn(request);
             return NoContent();
         }

@@ -16,12 +16,16 @@ namespace ReservationSystem.Infrastructure.Repositories
         public async Task<Host?> Get(string hostName)
             => await _context.Hosts.FindAsync(hostName);
 
+        public async Task UpdateHost(Host host)
+        {
+            _context.Hosts.Update(host);
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateHosts(IEnumerable<Host> hosts)
         {
-            var allHostNames = _context.Hosts.ToList();
-
-            _context.Hosts.RemoveRange(allHostNames);
-            _context.Hosts.AddRange(hosts);
+            _context.Hosts.UpdateRange(hosts);
 
             await _context.SaveChangesAsync();
         }

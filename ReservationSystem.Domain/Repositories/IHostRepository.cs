@@ -6,6 +6,7 @@ namespace ReservationSystem.Domain.Repositories
     {
         Task<IEnumerable<Host>> GetAll();
         Task<Host?> Get(string hostName);
+        Task UpdateHost(Host host);
         Task UpdateHosts(IEnumerable<Host> hosts);
     }
 }

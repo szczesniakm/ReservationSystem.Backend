@@ -14,12 +14,14 @@ namespace ReservationSystem.Application.Services
     public class HostsService
     {
         private readonly IHostRepository _hostRepository;
+        private readonly IOSRepository _osRepository;
         private readonly AmtSettings _amtSettigns;
         private readonly IHubContext<HostsHub> _hostsHubContext;
 
-        public HostsService(IHostRepository hostRepository, IOptions<AmtSettings> amtSettings, IHubContext<HostsHub> hostsHubContext)
+        public HostsService(IHostRepository hostRepository, IOSRepository osRepository, IOptions<AmtSettings> amtSettings, IHubContext<HostsHub> hostsHubContext)
         {
             _hostRepository = hostRepository;
+            _osRepository = osRepository;
             _amtSettigns = amtSettings.Value;
             _hostsHubContext = hostsHubContext;
         }
@@ -46,6 +48,16 @@ namespace ReservationSystem.Application.Services
                 throw new ServiceException($"Host {request.HostName} nie może zostać uruchomiony. Status {host.Status}");
             }
 
+            var os = await _osRepository.Get(request.OsName);
+            if(os is null)
+            {
+                throw new ServiceException($"Nie znaleziono systemu {request.OsName}.");
+            }
+
+            var setSystemCommand = _amtSettigns.SetSystemCommand.Replace("{os}", request.OsName).Replace("{hostname}", request.HostName);
+
+            await CommandExecutionHelper.ExecuteAsync("sh", $"-c {setSystemCommand}");
+
             var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --poweron --host {request.HostName} --pass {_amtSettigns.Password}");
 
             if (exitCode != 0 || output.Trim() != "SUCCESS")
@@ -53,53 +65,45 @@ namespace ReservationSystem.Application.Services
                 throw new ServiceException($"Błąd podczas uruchamiania hosta {request.HostName}");
             }
 
-            UpdateHostsStatus();
-        }
-
-        private async Task PowerOff(string hostUrl)
-        {
-            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --poweroff --host {hostUrl} --pass {_amtSettigns.Password}");
+            host.SetStatus(HostStatus.PowerOn);
+            await _hostRepository.UpdateHost(host);
+            await SendHostsToClients();
         }
 
         public async Task UpdateHostsStatus()
         {
-            var hostsUrls = await GetAvaliableAmtHostUrls();
-            var hosts = await GetUpdatedHosts(hostsUrls);
+            var hosts = await _hostRepository.GetAll();
+
+            foreach(var host in hosts)
+            {
+                var updatedStatus = await GetUpdatedHostStatus(host.Name);
+                host.SetStatus(updatedStatus);
+            }
 
             await _hostRepository.UpdateHosts(hosts);
+            await SendHostsToClients();
+        }
+
+        private async Task SendHostsToClients()
+        {
+            var hosts = await _hostRepository.GetAll();
             await _hostsHubContext.Clients.All.SendAsync("update_hosts", hosts);
         }
 
-        private async Task<List<string>> GetAvaliableAmtHostUrls()
+        private async Task<string> GetUpdatedHostStatus(string hostName)
         {
-            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", "amtscan --scan 10.146.225.0/24");
-            Regex IPAd = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
-            return IPAd.Matches(output).Skip(1).Select(x => x.ToString()).ToList();
-        }
-
-        private async Task<List<Host>> GetUpdatedHosts(List<string> avaliableAmtHostUrls)
-        {
-            List<Host> hosts = new List<Host>();
-            avaliableAmtHostUrls.ForEach(async x =>
-            {
-                var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --host {x} --pass {_amtSettigns.Password}");
-                if (exitCode == 0)
-                {
-                    var status = GetStatusFromOutput(output);
-                    if(status == HostStatus.DeepSleep)
-                    {
-                        await PowerOff(x);
-                    }
-                    hosts.Add(new Host(x, status));
-                }
-            });
-
-            return hosts;
+            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --host {hostName} --pass {_amtSettigns.Password}");
+            return GetStatusFromOutput(output);
         }
 
         private static string GetStatusFromOutput(string output)
         {
-            var status = output.Trim().Split(": ")[1];
+            var status = "Unknown";
+            try
+            {
+                status = output.Trim().Split(": ")[1];
+            }
+            catch { }
 
             switch (status)
             {
