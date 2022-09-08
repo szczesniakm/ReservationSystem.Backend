@@ -56,6 +56,11 @@ namespace ReservationSystem.Application.Services
             UpdateHostsStatus();
         }
 
+        private async Task PowerOff(string hostUrl)
+        {
+            var (output, exitCode) = await CommandExecutionHelper.ExecuteAsync("meshcmd", $"AmtPower --poweron --host {hostUrl} --pass {_amtSettigns.Password}");
+        }
+
         public async Task UpdateHostsStatus()
         {
             var hostsUrls = await GetAvaliableAmtHostUrls();
@@ -81,6 +86,10 @@ namespace ReservationSystem.Application.Services
                 if (exitCode == 0)
                 {
                     var status = GetStatusFromOutput(output);
+                    if(status == HostStatus.DeepSleep)
+                    {
+                        await PowerOff(x);
+                    }
                     hosts.Add(new Host(x, status));
                 }
             });
@@ -97,6 +106,8 @@ namespace ReservationSystem.Application.Services
                 case HostStatus.PowerOn:
                     return HostStatus.PowerOn;
                 case HostStatus.PowerOff:
+                    return HostStatus.PowerOff;
+                case HostStatus.DeepSleep:
                     return HostStatus.PowerOff;
                 default:
                     return HostStatus.Unknown;
