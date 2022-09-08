@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReservationSystem.Infrastructure;
 
@@ -10,9 +11,10 @@ using ReservationSystem.Infrastructure;
 namespace ReservationSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ReservationSystemContext))]
-    partial class ReservationSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20220907205841_New")]
+    partial class New
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");

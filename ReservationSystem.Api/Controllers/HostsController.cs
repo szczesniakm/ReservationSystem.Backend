@@ -5,7 +5,6 @@ using ReservationSystem.Application.Services;
 
 namespace ReservationSystem.Api.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class HostsController : ControllerBase

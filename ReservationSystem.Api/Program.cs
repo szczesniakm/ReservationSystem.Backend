@@ -24,7 +24,7 @@ namespace ReservationSystem.Api
             {
                 opt.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins("http://localhost:4200");
+                    policy.WithOrigins(builder.Configuration.GetValue<string>("ClientUrl"));
                     policy.AllowAnyHeader();
                     policy.AllowAnyMethod();
                     policy.AllowCredentials();
