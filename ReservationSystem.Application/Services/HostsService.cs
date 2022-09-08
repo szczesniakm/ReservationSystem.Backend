@@ -15,13 +15,20 @@ namespace ReservationSystem.Application.Services
     {
         private readonly IHostRepository _hostRepository;
         private readonly IOSRepository _osRepository;
+        private readonly IReservationLogRepository _reservationLogRepository;
         private readonly AmtSettings _amtSettigns;
         private readonly IHubContext<HostsHub> _hostsHubContext;
 
-        public HostsService(IHostRepository hostRepository, IOSRepository osRepository, IOptions<AmtSettings> amtSettings, IHubContext<HostsHub> hostsHubContext)
+        public HostsService(
+            IHostRepository hostRepository,
+            IOSRepository osRepository,
+            IReservationLogRepository reservationLogRepository,
+            IOptions<AmtSettings> amtSettings,
+            IHubContext<HostsHub> hostsHubContext)
         {
             _hostRepository = hostRepository;
             _osRepository = osRepository;
+            _reservationLogRepository = reservationLogRepository;
             _amtSettigns = amtSettings.Value;
             _hostsHubContext = hostsHubContext;
         }
@@ -49,6 +56,7 @@ namespace ReservationSystem.Application.Services
             }
 
             var os = await _osRepository.Get(request.OsName);
+
             if(os is null)
             {
                 throw new ServiceException($"Nie znaleziono systemu {request.OsName}.");
@@ -64,6 +72,8 @@ namespace ReservationSystem.Application.Services
             {
                 throw new ServiceException($"Błąd podczas uruchamiania hosta {request.HostName}");
             }
+
+            await _reservationLogRepository.Add(ReservationLog.Create(request.HostName, request.Username!, request.OsName));
 
             host.SetStatus(HostStatus.PowerOn);
             await _hostRepository.UpdateHost(host);

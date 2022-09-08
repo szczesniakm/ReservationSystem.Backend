@@ -11,7 +11,7 @@ using ReservationSystem.Infrastructure;
 namespace ReservationSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ReservationSystemContext))]
-    [Migration("20220908210108_Initial")]
+    [Migration("20220908230245_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,24 +100,21 @@ namespace ReservationSystem.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ReservationSystem.Domain.Entities.Reservation", b =>
+            modelBuilder.Entity("ReservationSystem.Domain.Entities.ReservationLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("HostName")
+                    b.Property<string>("Host")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OSName")
+                    b.Property<string>("OS")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")
@@ -126,30 +123,7 @@ namespace ReservationSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HostName");
-
-                    b.HasIndex("OSName");
-
-                    b.ToTable("Reservations");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Domain.Entities.Reservation", b =>
-                {
-                    b.HasOne("ReservationSystem.Domain.Entities.Host", "Host")
-                        .WithMany()
-                        .HasForeignKey("HostName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReservationSystem.Domain.Entities.OS", "OS")
-                        .WithMany()
-                        .HasForeignKey("OSName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Host");
-
-                    b.Navigation("OS");
+                    b.ToTable("ReseservationLogs");
                 });
 #pragma warning restore 612, 618
         }

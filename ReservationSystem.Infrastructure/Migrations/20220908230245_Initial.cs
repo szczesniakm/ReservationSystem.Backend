@@ -33,32 +33,19 @@ namespace ReservationSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reservations",
+                name: "ReseservationLogs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    HostName = table.Column<string>(type: "TEXT", nullable: false),
+                    Host = table.Column<string>(type: "TEXT", nullable: false),
                     Username = table.Column<string>(type: "TEXT", nullable: false),
-                    OSName = table.Column<string>(type: "TEXT", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    OS = table.Column<string>(type: "TEXT", nullable: false),
+                    Date = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reservations_Hosts_HostName",
-                        column: x => x.HostName,
-                        principalTable: "Hosts",
-                        principalColumn: "Name",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reservations_OSs_OSName",
-                        column: x => x.OSName,
-                        principalTable: "OSs",
-                        principalColumn: "Name",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_ReseservationLogs", x => x.Id);
                 });
 
             migrationBuilder.InsertData(
@@ -115,28 +102,18 @@ namespace ReservationSystem.Infrastructure.Migrations
                 table: "OSs",
                 column: "Name",
                 value: "windows 10");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_HostName",
-                table: "Reservations",
-                column: "HostName");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_OSName",
-                table: "Reservations",
-                column: "OSName");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Reservations");
-
-            migrationBuilder.DropTable(
                 name: "Hosts");
 
             migrationBuilder.DropTable(
                 name: "OSs");
+
+            migrationBuilder.DropTable(
+                name: "ReseservationLogs");
         }
     }
 }

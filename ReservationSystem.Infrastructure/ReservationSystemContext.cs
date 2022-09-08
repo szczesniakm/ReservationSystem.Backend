@@ -10,7 +10,7 @@ namespace ReservationSystem.Infrastructure
     {
         private readonly DatabaseSettings _databaseSettings;
 
-        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<ReservationLog> ReseservationLogs { get; set; }
         public DbSet<Host> Hosts { get; set; }
         public DbSet<OS> OSs { get; set; }
 
