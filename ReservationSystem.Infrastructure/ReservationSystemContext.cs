@@ -30,6 +30,23 @@ namespace ReservationSystem.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(HostEntityTypeConfiguration).Assembly);
+
+            modelBuilder.Entity<Host>().HasData(
+                new Host("s1", ""),
+                new Host("s2", ""),
+                new Host("s3", ""),
+                new Host("s4", ""),
+                new Host("s5", ""),
+                new Host("s6", ""),
+                new Host("s7", ""),
+                new Host("s8", ""),
+                new Host("s9", "")
+                );
+
+            modelBuilder.Entity<OS>().HasData(
+                new OS("archlinux console"),
+                new OS("windows 10")
+                );
         }
     }
 }

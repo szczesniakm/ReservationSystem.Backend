@@ -11,8 +11,8 @@ using ReservationSystem.Infrastructure;
 namespace ReservationSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ReservationSystemContext))]
-    [Migration("20220808190416_linkreservations")]
-    partial class linkreservations
+    [Migration("20220908210108_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,9 +24,60 @@ namespace ReservationSystem.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Name");
 
                     b.ToTable("Hosts");
+
+                    b.HasData(
+                        new
+                        {
+                            Name = "s1",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s2",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s3",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s4",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s5",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s6",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s7",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s8",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s9",
+                            Status = ""
+                        });
                 });
 
             modelBuilder.Entity("ReservationSystem.Domain.Entities.OS", b =>
@@ -37,6 +88,16 @@ namespace ReservationSystem.Infrastructure.Migrations
                     b.HasKey("Name");
 
                     b.ToTable("OSs");
+
+                    b.HasData(
+                        new
+                        {
+                            Name = "archlinux console"
+                        },
+                        new
+                        {
+                            Name = "windows 10"
+                        });
                 });
 
             modelBuilder.Entity("ReservationSystem.Domain.Entities.Reservation", b =>
@@ -59,9 +120,6 @@ namespace ReservationSystem.Infrastructure.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -78,7 +136,7 @@ namespace ReservationSystem.Infrastructure.Migrations
             modelBuilder.Entity("ReservationSystem.Domain.Entities.Reservation", b =>
                 {
                     b.HasOne("ReservationSystem.Domain.Entities.Host", "Host")
-                        .WithMany("Reservations")
+                        .WithMany()
                         .HasForeignKey("HostName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -92,11 +150,6 @@ namespace ReservationSystem.Infrastructure.Migrations
                     b.Navigation("Host");
 
                     b.Navigation("OS");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Domain.Entities.Host", b =>
-                {
-                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

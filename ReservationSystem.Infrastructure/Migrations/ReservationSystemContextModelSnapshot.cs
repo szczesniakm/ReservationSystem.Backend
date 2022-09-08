@@ -29,6 +29,53 @@ namespace ReservationSystem.Infrastructure.Migrations
                     b.HasKey("Name");
 
                     b.ToTable("Hosts");
+
+                    b.HasData(
+                        new
+                        {
+                            Name = "s1",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s2",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s3",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s4",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s5",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s6",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s7",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s8",
+                            Status = ""
+                        },
+                        new
+                        {
+                            Name = "s9",
+                            Status = ""
+                        });
                 });
 
             modelBuilder.Entity("ReservationSystem.Domain.Entities.OS", b =>
@@ -39,6 +86,16 @@ namespace ReservationSystem.Infrastructure.Migrations
                     b.HasKey("Name");
 
                     b.ToTable("OSs");
+
+                    b.HasData(
+                        new
+                        {
+                            Name = "archlinux console"
+                        },
+                        new
+                        {
+                            Name = "windows 10"
+                        });
                 });
 
             modelBuilder.Entity("ReservationSystem.Domain.Entities.Reservation", b =>
@@ -60,9 +117,6 @@ namespace ReservationSystem.Infrastructure.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Username")
                         .IsRequired()
