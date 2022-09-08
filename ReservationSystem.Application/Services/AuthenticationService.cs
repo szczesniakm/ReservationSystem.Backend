@@ -29,9 +29,9 @@ namespace ReservationSystem.Application.Services
         {
             await _loginRequestValidator.ValidateAndThrowAsync(model);
 
-            var groups = await _ldapAuthenticationProvider.AuthenticateAsync(model.Username, model.Password);
+            //var groups = await _ldapAuthenticationProvider.AuthenticateAsync(model.Username, model.Password);
 
-            var token = _jwtTokenService.CreateToken(model.Username, groups);
+            var token = _jwtTokenService.CreateToken(model.Username);
 
             return new LoginResponse(token);
         }
